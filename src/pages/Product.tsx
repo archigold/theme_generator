@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { getProductById } from "@/lib/products";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CheckoutButton from "@/components/CheckoutButton";
 
 const Product = () => {
   const { id } = useParams();
@@ -122,23 +123,32 @@ const Product = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                onClick={handleAddToCart}
-                size="lg"
-                className="flex-1 bg-gradient-primary hover:opacity-90 h-12"
-              >
-                <ShoppingCart className="h-5 w-5 mr-2" />
-                Add to Cart
-              </Button>
+            <div className="flex flex-col gap-4">
+              <CheckoutButton 
+                productId={product.id.toString()}
+                productName={product.name}
+                price={product.price}
+              />
               
-              <div className="flex gap-2">
-                <Button variant="outline" size="lg" className="h-12">
-                  <Heart className="h-5 w-5" />
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  onClick={handleAddToCart}
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 h-12"
+                >
+                  <ShoppingCart className="h-5 w-5 mr-2" />
+                  Add to Cart
                 </Button>
-                <Button variant="outline" size="lg" className="h-12">
-                  <Share2 className="h-5 w-5" />
-                </Button>
+                
+                <div className="flex gap-2">
+                  <Button variant="outline" size="lg" className="h-12">
+                    <Heart className="h-5 w-5" />
+                  </Button>
+                  <Button variant="outline" size="lg" className="h-12">
+                    <Share2 className="h-5 w-5" />
+                  </Button>
+                </div>
               </div>
             </div>
 

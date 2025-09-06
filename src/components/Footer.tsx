@@ -70,7 +70,7 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-foreground">Customer Service</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</a></li>
+              <li><a href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Shipping Info</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Returns & Exchanges</a></li>
               <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Size Guide</a></li>
@@ -172,23 +172,29 @@ const Footer = () => {
               © 2024 GadgetStore. All rights reserved.
             </p>
             <div className="flex gap-4 text-sm">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Cookie Policy</a>
+              <a href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
+              <a href="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</a>
+              <a href="/cookies" className="text-muted-foreground hover:text-primary transition-colors">Cookie Policy</a>
             </div>
           </div>
           
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">We accept:</span>
-            <div className="flex gap-1">
-              <div className="w-8 h-5 bg-primary rounded text-xs text-primary-foreground flex items-center justify-center font-bold">
-                VISA
+            <div className="flex gap-2">
+              <div className="w-10 h-6 bg-white rounded border flex items-center justify-center">
+                <span className="text-xs font-bold text-blue-600">VISA</span>
               </div>
-              <div className="w-8 h-5 bg-primary rounded text-xs text-primary-foreground flex items-center justify-center font-bold">
-                MC
+              <div className="w-10 h-6 bg-white rounded border flex items-center justify-center">
+                <span className="text-xs font-bold text-red-600">MC</span>
               </div>
-              <div className="w-8 h-5 bg-primary rounded text-xs text-primary-foreground flex items-center justify-center font-bold">
-                PP
+              <div className="w-10 h-6 bg-white rounded border flex items-center justify-center">
+                <span className="text-xs font-bold text-blue-800">AMEX</span>
+              </div>
+              <div className="w-10 h-6 bg-white rounded border flex items-center justify-center">
+                <span className="text-xs font-bold text-blue-500">PP</span>
+              </div>
+              <div className="w-10 h-6 bg-white rounded border flex items-center justify-center">
+                <CreditCard className="h-3 w-3 text-gray-600" />
               </div>
             </div>
           </div>
