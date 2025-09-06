@@ -5,8 +5,9 @@ import heroBanner from "@/assets/hero-banner.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-hero min-h-[500px] flex items-center">
-      <div className="absolute inset-0 bg-black/20 z-10" />
+    <section className="relative overflow-hidden bg-gradient-hero min-h-[600px] flex items-center">
+      <div className="absolute inset-0 bg-black/40 z-10" />
+      <div className="absolute inset-0 bg-gradient-neon/10 z-15" />
       <img 
         src={heroBanner}
         alt="Latest gadgets collection"
@@ -22,33 +23,34 @@ const HeroSection = () => {
             </span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            Latest Tech
-            <span className="block text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
-              Gadgets
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <span className="block text-white drop-shadow-2xl">Future Tech</span>
+            <span className="block text-transparent bg-gradient-neon bg-clip-text drop-shadow-glow animate-pulse">
+              Unleashed
             </span>
           </h1>
           
-          <p className="text-xl text-white/90 mb-8 max-w-lg">
-            Discover cutting-edge technology and innovative gadgets that transform your daily life. Premium quality, unbeatable prices.
+          <p className="text-xl text-white/95 mb-8 max-w-lg backdrop-blur-sm">
+            Experience tomorrow's technology today. Revolutionary gadgets that redefine possibilities and elevate your digital lifestyle.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">
             <Link to="/products">
               <Button 
+                variant="neon"
                 size="lg" 
-                className="bg-white text-primary hover:bg-white/90 font-semibold px-8"
+                className="font-semibold px-8"
               >
-                Shop Now
+                Explore Future
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
             </Link>
             
             <Link to="/deals">
               <Button 
-                variant="outline" 
+                variant="glass" 
                 size="lg"
-                className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8"
+                className="font-semibold px-8"
               >
                 View Deals
               </Button>

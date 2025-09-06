@@ -9,15 +9,15 @@ const Header = () => {
   const [cartItems, setCartItems] = useState(0);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <header className="sticky top-0 z-50 bg-background/30 backdrop-blur-glass border-b border-border/20 shadow-glass">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center shadow-neon group-hover:shadow-glow transition-all duration-300">
               <span className="text-primary-foreground font-bold">G</span>
             </div>
-            <h1 className="text-xl font-bold text-foreground">GadgetStore</h1>
+            <h1 className="text-xl font-bold bg-gradient-neon bg-clip-text text-transparent">GadgetStore</h1>
           </Link>
 
           {/* Navigation */}
@@ -27,7 +27,7 @@ const Header = () => {
             <Link to="/deals" className="text-foreground hover:text-primary transition-colors">Deals</Link>
             <div className="relative group">
               <button className="text-foreground hover:text-primary transition-colors">Categories</button>
-              <div className="absolute top-full left-0 bg-card border border-border rounded-lg shadow-lg p-4 space-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-48">
+              <div className="absolute top-full left-0 bg-card/80 backdrop-blur-glass border border-border/20 rounded-lg shadow-elegant p-4 space-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-48">
                 <Link to="/category/smartphones" className="block text-foreground hover:text-primary transition-colors">Smartphones</Link>
                 <Link to="/category/laptops" className="block text-foreground hover:text-primary transition-colors">Laptops</Link>
                 <Link to="/category/audio" className="block text-foreground hover:text-primary transition-colors">Audio & Headphones</Link>

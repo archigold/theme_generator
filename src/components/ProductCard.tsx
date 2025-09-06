@@ -41,7 +41,7 @@ const ProductCard = ({
   };
 
   return (
-    <Card className="group overflow-hidden bg-gradient-card shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
+    <Card className="group overflow-hidden bg-gradient-card shadow-card hover:shadow-neon transition-all duration-500 hover:-translate-y-2 hover:scale-[1.02] border border-border/20">
       <div className="relative overflow-hidden">
         {badge && (
           <Badge className="absolute top-3 left-3 z-10 bg-primary text-primary-foreground">
@@ -86,7 +86,8 @@ const ProductCard = ({
       <CardFooter className="p-4 pt-0">
         <Button 
           onClick={() => onAddToCart(id)}
-          className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
+          variant="neon"
+          className="w-full"
           size="lg"
         >
           <ShoppingCart className="h-4 w-4 mr-2" />
