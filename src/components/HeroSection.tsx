@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroBanner from "@/assets/hero-banner.jpg";
 
 const HeroSection = () => {
@@ -33,21 +34,25 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button 
-              size="lg" 
-              className="bg-white text-primary hover:bg-white/90 font-semibold px-8"
-            >
-              Shop Now
-              <ArrowRight className="h-5 w-5 ml-2" />
-            </Button>
+            <Link to="/products">
+              <Button 
+                size="lg" 
+                className="bg-white text-primary hover:bg-white/90 font-semibold px-8"
+              >
+                Shop Now
+                <ArrowRight className="h-5 w-5 ml-2" />
+              </Button>
+            </Link>
             
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8"
-            >
-              View Deals
-            </Button>
+            <Link to="/deals">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8"
+              >
+                View Deals
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
