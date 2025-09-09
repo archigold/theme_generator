@@ -1,13 +1,11 @@
-import { ShoppingCart, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import SearchBar from "@/components/SearchBar";
-import { useState } from "react";
+import SearchBarWithSuggestions from "@/components/SearchBarWithSuggestions";
+import MobileSearchModal from "@/components/MobileSearchModal";
+import ShoppingCart from "@/components/ShoppingCart";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const [cartItems, setCartItems] = useState(0);
-
   return (
     <header className="sticky top-0 z-50 bg-background/30 backdrop-blur-glass border-b border-border/20 shadow-glass">
       <div className="container mx-auto px-4 py-4">
@@ -22,7 +20,6 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-foreground hover:text-primary transition-colors">Home</Link>
             <Link to="/products" className="text-foreground hover:text-primary transition-colors">Products</Link>
             <Link to="/deals" className="text-foreground hover:text-primary transition-colors">Deals</Link>
             <div className="relative group">
@@ -41,17 +38,11 @@ const Header = () => {
           {/* Search & Cart */}
           <div className="flex items-center gap-4">
             <div className="hidden sm:block">
-              <SearchBar className="w-64" />
+              <SearchBarWithSuggestions className="w-64" />
             </div>
             
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              {cartItems > 0 && (
-                <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
-                  {cartItems}
-                </Badge>
-              )}
-            </Button>
+            <MobileSearchModal />
+            <ShoppingCart />
 
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />

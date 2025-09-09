@@ -1,7 +1,8 @@
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, CreditCard, Truck, Shield, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+// Temporarily disable Separator to fix loading issue
+// import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -71,11 +72,9 @@ const Footer = () => {
             <h4 className="text-lg font-semibold text-foreground">Customer Service</h4>
             <ul className="space-y-2">
               <li><a href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Shipping Info</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Returns & Exchanges</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Size Guide</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a></li>
-              <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Support</a></li>
+              <li><a href="/shipping" className="text-muted-foreground hover:text-primary transition-colors">Shipping Info</a></li>
+              <li><a href="/returns" className="text-muted-foreground hover:text-primary transition-colors">Returns & Exchanges</a></li>
+              <li><a href="/faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a></li>
             </ul>
           </div>
 
@@ -101,7 +100,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <Separator />
+      <div className="border-t border-border" />
 
       {/* Features Bar */}
       <div className="container mx-auto px-4 py-6">
@@ -140,7 +139,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <Separator />
+      <div className="border-t border-border" />
 
       {/* Contact Info */}
       <div className="container mx-auto px-4 py-6">
@@ -162,7 +161,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <Separator />
+      <div className="border-t border-border" />
 
       {/* Bottom Footer */}
       <div className="container mx-auto px-4 py-6">

@@ -5,7 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 
 interface ProductCardProps {
-  id: number;
+  id: string;
+  slug?: string;
   name: string;
   price: number;
   originalPrice?: number;
@@ -13,11 +14,12 @@ interface ProductCardProps {
   reviews: number;
   image: string;
   badge?: string;
-  onAddToCart: (id: number) => void;
+  onAddToCart: (id: string, name: string) => void;
 }
 
 const ProductCard = ({ 
   id, 
+  slug,
   name, 
   price, 
   originalPrice, 
@@ -48,7 +50,7 @@ const ProductCard = ({
             {badge}
           </Badge>
         )}
-        <Link to={`/product/${id}`}>
+        <Link to={`/product/${slug || id}`}>
           <img
             src={image}
             alt={name}
@@ -58,7 +60,7 @@ const ProductCard = ({
       </div>
       
       <CardContent className="p-4">
-        <Link to={`/product/${id}`}>
+        <Link to={`/product/${slug || id}`}>
           <h3 className="font-semibold text-lg text-foreground mb-2 line-clamp-2 hover:text-primary transition-colors cursor-pointer">
             {name}
           </h3>
@@ -85,7 +87,7 @@ const ProductCard = ({
       
       <CardFooter className="p-4 pt-0">
         <Button 
-          onClick={() => onAddToCart(id)}
+          onClick={() => onAddToCart(id, name)}
           variant="neon"
           className="w-full"
           size="lg"

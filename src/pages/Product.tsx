@@ -1,28 +1,97 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, ShoppingCart, Heart, Share2, Truck, Shield, RotateCcw } from "lucide-react";
+import { ArrowLeft, Star, ShoppingCart, Share2, Truck, Shield, RotateCcw, Copy, Check, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+// Temporarily disable Separator to fix loading issue
+// import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { getProductById } from "@/lib/products";
+import { useProduct, useProductById, useAddToCart } from "@/hooks/use-vendure";
+import { useLocalCart } from "@/hooks/use-local-cart";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import CheckoutButton from "@/components/CheckoutButton";
 
 const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const product = getProductById(Number(id));
+  // Use Vendure hooks to fetch product data - try both slug and ID
+  const { data: vendureProductBySlug, isLoading: isLoadingBySlug, error: errorBySlug } = useProduct(id || '');
+  const { data: vendureProductById, isLoading: isLoadingById, error: errorById } = useProductById(id || '');
+  const addToCartMutation = useAddToCart();
+  
+  // Local cart as fallback
+  const { addToCart: addToLocalCart } = useLocalCart();
+  
+  // Determine which product data to use
+  const vendureProduct = vendureProductBySlug || vendureProductById;
+  const isLoading = isLoadingBySlug || isLoadingById;
+  const error = errorBySlug && errorById ? errorBySlug : null;
 
-  if (!product) {
+
+
+
+  // Share functionality
+  const handleShare = async () => {
+    const shareData = {
+      title: vendureProduct?.name || 'Check out this product',
+      text: vendureProduct?.description || 'Amazing product you should see',
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback: copy to clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        toast({
+          title: "Link copied!",
+          description: "Product link has been copied to your clipboard.",
+        });
+      }
+    } catch (error) {
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        toast({
+          title: "Link copied!",
+          description: "Product link has been copied to your clipboard.",
+        });
+      } catch (clipboardError) {
+        toast({
+          title: "Share failed",
+          description: "Unable to share or copy link.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-2xl font-bold mb-4">Loading...</h1>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Error state
+  if (error || !vendureProduct) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
+          <p className="text-muted-foreground mb-4">
+            We couldn't find the product you're looking for. It may have been removed or the link is incorrect.
+          </p>
           <Button onClick={() => navigate("/products")}>
             Browse All Products
           </Button>
@@ -31,6 +100,32 @@ const Product = () => {
       </div>
     );
   }
+
+  // Transform Vendure product to match expected format
+  const defaultVariant = vendureProduct.variants?.[0];
+  const product = {
+    id: vendureProduct.id,
+    name: vendureProduct.name,
+    description: vendureProduct.description || 'No description available',
+    price: defaultVariant ? defaultVariant.priceWithTax / 100 : 0,
+    originalPrice: undefined,
+    image: vendureProduct.featuredAsset?.preview || '/placeholder.svg',
+    rating: 4.5, // Default rating since Vendure doesn't have this
+    reviews: 128, // Default reviews
+    badge: undefined,
+    specifications: {
+      'Brand': 'TechTrek',
+      'Model': vendureProduct.name,
+      'SKU': defaultVariant?.sku || 'N/A',
+      'Availability': 'In Stock'
+    },
+    features: [
+      'High-quality materials',
+      'Advanced technology',
+      'User-friendly design',
+      'Durable construction'
+    ]
+  };
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -45,11 +140,76 @@ const Product = () => {
     ));
   };
 
-  const handleAddToCart = () => {
-    toast({
-      title: "Added to cart!",
-      description: `${product.name} has been added to your cart.`,
-    });
+  const handleAddToCart = async () => {
+    if (vendureProduct) {
+      const defaultVariant = vendureProduct.variants[0];
+      const price = defaultVariant ? defaultVariant.priceWithTax / 100 : 0;
+      const variantId = defaultVariant?.id;
+      
+      console.log('Adding Vendure product to local cart:', { 
+        productId: vendureProduct.id, 
+        productName: vendureProduct.name, 
+        price, 
+        image: vendureProduct.featuredAsset?.preview 
+      });
+      
+      addToLocalCart(
+        vendureProduct.id, 
+        vendureProduct.name, 
+        price, 
+        vendureProduct.featuredAsset?.preview || '/placeholder.svg', 
+        variantId
+      );
+      
+      toast({
+        title: "Added to cart!",
+        description: `${vendureProduct.name} has been added to your cart.`,
+      });
+      
+      // Force a small delay to ensure state update
+      setTimeout(() => {
+        console.log('Cart update completed');
+      }, 100);
+    } else {
+      console.log('No product available');
+      toast({
+        title: "Error",
+        description: "Product not found",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBuyNow = async () => {
+    if (vendureProduct) {
+      const defaultVariant = vendureProduct.variants[0];
+      const price = defaultVariant ? defaultVariant.priceWithTax / 100 : 0;
+      const variantId = defaultVariant?.id;
+      
+      console.log('Adding to local cart for Buy Now:', { 
+        productId: vendureProduct.id, 
+        productName: vendureProduct.name, 
+        price, 
+        image: vendureProduct.featuredAsset?.preview 
+      });
+      
+      addToLocalCart(
+        vendureProduct.id, 
+        vendureProduct.name, 
+        price, 
+        vendureProduct.featuredAsset?.preview || '/placeholder.svg', 
+        variantId
+      );
+      
+      // Navigate to checkout immediately
+      navigate('/checkout');
+    } else {
+      toast({
+        title: "Error",
+        description: "Product not found",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -71,7 +231,7 @@ const Product = () => {
         </div>
 
         {/* Product Details */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Product Image */}
           <div className="space-y-4">
             <div className="relative overflow-hidden rounded-lg bg-gradient-card shadow-card">
@@ -83,7 +243,7 @@ const Product = () => {
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-96 lg:h-[500px] object-cover"
+                className="w-full h-80 sm:h-96 lg:h-[500px] object-cover"
               />
             </div>
           </div>
@@ -91,70 +251,78 @@ const Product = () => {
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-4">
                 {product.name}
               </h1>
               
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex flex-wrap items-center gap-2 mb-4">
                 <div className="flex items-center gap-1">
                   {renderStars(product.rating)}
                 </div>
-                <span className="text-lg font-medium">{product.rating}</span>
-                <span className="text-muted-foreground">
+                <span className="text-base sm:text-lg font-medium">{product.rating}</span>
+                <span className="text-sm sm:text-base text-muted-foreground">
                   ({product.reviews} reviews)
                 </span>
               </div>
 
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                 {product.description}
               </p>
             </div>
 
             {/* Pricing */}
-            <div className="flex items-center gap-4">
-              <span className="text-4xl font-bold text-primary">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+              <span className="text-3xl sm:text-4xl font-bold text-primary">
                 ${product.price}
               </span>
               {product.originalPrice && (
-                <span className="text-2xl text-muted-foreground line-through">
+                <span className="text-xl sm:text-2xl text-muted-foreground line-through">
                   ${product.originalPrice}
                 </span>
               )}
             </div>
 
             {/* Actions */}
-            <div className="flex flex-col gap-4">
-              <CheckoutButton 
-                productId={product.id.toString()}
-                productName={product.name}
-                price={product.price}
-              />
-              
-              <div className="flex flex-col sm:flex-row gap-4">
+            <div className="space-y-4">
+              {/* Primary Action Buttons */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Button 
+                  onClick={handleBuyNow}
+                  size="lg"
+                  className="w-full h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                >
+                  <Zap className="h-5 w-5 mr-2" />
+                  Buy Now
+                </Button>
+                
                 <Button 
                   onClick={handleAddToCart}
                   size="lg"
                   variant="outline"
-                  className="flex-1 h-12"
+                  className="w-full h-12"
                 >
                   <ShoppingCart className="h-5 w-5 mr-2" />
                   Add to Cart
                 </Button>
-                
-                <div className="flex gap-2">
-                  <Button variant="outline" size="lg" className="h-12">
-                    <Heart className="h-5 w-5" />
-                  </Button>
-                  <Button variant="outline" size="lg" className="h-12">
-                    <Share2 className="h-5 w-5" />
-                  </Button>
-                </div>
+              </div>
+              
+              {/* Secondary Actions */}
+              <div className="flex justify-center">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="h-12 flex items-center gap-2"
+                  onClick={handleShare}
+                >
+                  <Share2 className="h-5 w-5" />
+                  <span>Share this product</span>
+                </Button>
               </div>
             </div>
 
             {/* Features */}
             <div className="space-y-4">
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <Truck className="h-4 w-4" />
                   <span>Free shipping</span>
@@ -181,9 +349,9 @@ const Product = () => {
                 <h3 className="text-xl font-bold mb-4">Specifications</h3>
                 <div className="space-y-3">
                   {Object.entries(product.specifications).map(([key, value]) => (
-                    <div key={key} className="flex justify-between py-2">
-                      <span className="font-medium text-muted-foreground">{key}:</span>
-                      <span className="text-foreground">{value}</span>
+                    <div key={key} className="flex flex-col sm:flex-row sm:justify-between py-2 gap-1 sm:gap-0">
+                      <span className="font-medium text-muted-foreground text-sm sm:text-base">{key}:</span>
+                      <span className="text-foreground text-sm sm:text-base">{value}</span>
                     </div>
                   ))}
                 </div>

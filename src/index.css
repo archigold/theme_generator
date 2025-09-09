@@ -129,3 +129,43 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .backdrop-blur-glass {
+    backdrop-filter: blur(16px);
+  }
+  
+  .shadow-glass {
+    box-shadow: var(--shadow-glass);
+  }
+  
+  .shadow-neon {
+    box-shadow: var(--shadow-neon);
+  }
+  
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-card-hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+  
+  /* Cart slide-in animation */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
