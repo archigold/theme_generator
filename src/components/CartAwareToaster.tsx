@@ -11,7 +11,7 @@ export function CartAwareToaster() {
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
-          <Toast key={id} {...props}>
+          <Toast key={id} {...props} className="pointer-events-auto">
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && <ToastDescription>{description}</ToastDescription>}
@@ -23,9 +23,9 @@ export function CartAwareToaster() {
       })}
       <ToastViewport 
         className={cn(
-          "fixed bottom-0 z-[100] flex max-h-screen w-full flex-col p-4 md:max-w-[420px]",
+          "fixed bottom-0 z-[100] flex max-h-screen flex-col-reverse p-4 pointer-events-none md:max-w-[420px]",
           isCartOpen 
-            ? "sm:right-[28rem] md:right-[30rem]" // Position to the left of cart when open (cart is max-w-md = 28rem)
+            ? "right-[28rem] md:right-[30rem]" // Position to the left of cart when open (cart is max-w-md = 28rem)
             : "right-0" // Normal position when cart is closed
         )}
       />

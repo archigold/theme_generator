@@ -144,33 +144,34 @@ const ShoppingCart = () => {
           style={{
             animation: 'slideInRight 0.3s ease-out',
             height: '100vh',
-            paddingTop: '80px' // Start below header
+            paddingTop: '60px', // Reduced padding for small screens
+            minHeight: '400px' // Ensure minimum height
           }}
         >
-            <div className="p-6 border-b border-border/50 bg-gradient-to-r from-primary/5 to-transparent">
+            <div className="p-3 sm:p-6 border-b border-border/50 bg-gradient-to-r from-primary/5 to-transparent">
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-primary/10 rounded-full">
-                    <ShoppingCartIcon className="h-5 w-5 text-primary" />
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="p-1 sm:p-2 bg-primary/10 rounded-full">
+                    <ShoppingCartIcon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-foreground">Shopping Cart</h2>
-                    <p className="text-sm text-muted-foreground">{displayCart.totalItems} item{displayCart.totalItems !== 1 ? 's' : ''}</p>
+                    <h2 className="text-sm sm:text-lg font-bold text-foreground">Cart</h2>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{displayCart.totalItems} item{displayCart.totalItems !== 1 ? 's' : ''}</p>
                   </div>
                 </div>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  className="h-8 w-8 sm:h-10 sm:w-10 hover:bg-destructive/10 hover:text-destructive transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </div>
             </div>
             
-            <div className="flex flex-col h-full" style={{ height: 'calc(100vh - 80px)' }}>
-              <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className="flex flex-col" style={{ height: 'calc(100vh - 60px)', minHeight: '340px' }}>
+              <div className="flex-1 overflow-y-auto p-3 sm:p-6 space-y-2 sm:space-y-4" style={{ maxHeight: 'calc(100vh - 120px)' }}>
                 
                 {isLoading && !useLocalCartData ? (
                   <div className="space-y-4">
@@ -197,12 +198,12 @@ const ShoppingCart = () => {
                 ) : (
                   <div className="space-y-4">
                     {displayCart.items.map((item) => (
-                      <div key={item.id} className="group relative flex items-start space-x-4 p-4 border border-border/50 rounded-xl bg-gradient-to-r from-card to-card/50 hover:from-card/80 hover:to-card/60 transition-all duration-200 hover:shadow-md hover:border-primary/20">
+                      <div key={item.id} className="group relative flex items-start space-x-2 sm:space-x-4 p-2 sm:p-4 border border-border/50 rounded-xl bg-gradient-to-r from-card to-card/50 hover:from-card/80 hover:to-card/60 transition-all duration-200 hover:shadow-md hover:border-primary/20">
                         <div className="relative">
                           <img
                             src={item.image || '/placeholder.svg'}
                             alt={item.name || 'Product'}
-                            className="h-14 w-14 object-cover rounded-lg flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow"
+                            className="h-10 w-10 sm:h-14 sm:w-14 object-cover rounded-lg flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow"
                           />
                           <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                             {item.quantity}
@@ -273,31 +274,29 @@ const ShoppingCart = () => {
               </div>
               
               {displayCart.items.length > 0 && (
-                <div className="border-t border-border/50 p-6 space-y-4 bg-gradient-to-t from-muted/30 to-transparent">
-                  <div className="flex justify-between items-center p-4 bg-primary/5 rounded-xl border border-primary/10">
+                <div className="border-t border-border/50 p-2 sm:p-6 space-y-2 sm:space-y-4 bg-gradient-to-t from-muted/30 to-transparent flex-shrink-0 mt-auto">
+                  <div className="flex justify-between items-center p-2 sm:p-4 bg-primary/5 rounded-lg sm:rounded-xl border border-primary/10">
                     <div>
-                      <span className="text-sm text-muted-foreground">Total ({displayCart.totalItems} items)</span>
-                      <p className="text-2xl font-bold text-primary">
+                      <span className="text-xs text-muted-foreground">Total ({displayCart.totalItems} items)</span>
+                      <p className="text-sm sm:text-2xl font-bold text-primary">
                         {formatPrice(displayCart.totalPrice || 0)}
                       </p>
                     </div>
-                    <div className="p-3 bg-primary/10 rounded-full">
-                      <ShoppingCartIcon className="h-6 w-6 text-primary" />
+                    <div className="p-2 sm:p-3 bg-primary/10 rounded-full">
+                      <ShoppingCartIcon className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
                     </div>
                   </div>
                   
-                  <div className="space-y-3">
-                    <Button 
-                      className="w-full h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-200" 
-                      size="lg"
-                      onClick={() => {
-                        setIsOpen(false);
-                        navigate('/checkout');
-                      }}
-                    >
-                      Proceed to Checkout
-                    </Button>
-                  </div>
+                  <Button 
+                    className="w-full h-12 sm:h-12 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-200 text-sm sm:text-base rounded-lg sm:rounded-xl border border-primary/20" 
+                    size="lg"
+                    onClick={() => {
+                      setIsOpen(false);
+                      navigate('/checkout');
+                    }}
+                  >
+                    Proceed to Checkout
+                  </Button>
                 </div>
               )}
             </div>
