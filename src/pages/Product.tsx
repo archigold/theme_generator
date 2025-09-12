@@ -193,6 +193,7 @@ const Product = () => {
         image: vendureProduct.featuredAsset?.preview 
       });
       
+      // First: Add to cart (same as Add to Cart button)
       addToLocalCart(
         vendureProduct.id, 
         vendureProduct.name, 
@@ -201,8 +202,16 @@ const Product = () => {
         variantId
       );
       
-      // Navigate to checkout immediately
-      navigate('/checkout');
+      // Show success message
+      toast({
+        title: "Added to cart!",
+        description: `${vendureProduct.name} has been added to your cart.`,
+      });
+      
+      // Then: Navigate to checkout after a brief delay to ensure state update
+      setTimeout(() => {
+        navigate('/checkout');
+      }, 500); // Small delay to ensure cart state is updated
     } else {
       toast({
         title: "Error",
