@@ -1,10 +1,20 @@
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, CreditCard, Truck, Shield, RotateCcw } from "lucide-react";
+import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, CreditCard, Truck, Shield, RotateCcw, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 // Temporarily disable Separator to fix loading issue
 // import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+
+// Helper function to get admin URL from API URL
+const getAdminUrl = () => {
+  const adminUrl = import.meta.env.VITE_VENDURE_ADMIN_URL;
+  if (adminUrl) return adminUrl;
+  
+  const apiUrl = import.meta.env.VITE_VENDURE_API_URL || 'http://51.15.207.136:3000/shop-api';
+  // Convert shop-api to admin
+  return apiUrl.replace('/shop-api', '/admin');
+};
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -64,6 +74,17 @@ const Footer = () => {
               <li><a href="/category/smartphones" className="text-muted-foreground hover:text-primary transition-colors">Smartphones</a></li>
               <li><a href="/category/laptops" className="text-muted-foreground hover:text-primary transition-colors">Laptops</a></li>
               <li><a href="/category/audio" className="text-muted-foreground hover:text-primary transition-colors">Audio</a></li>
+              <li>
+                <a 
+                  href={getAdminUrl()} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+                >
+                  <Settings className="h-4 w-4" />
+                  Admin Panel
+                </a>
+              </li>
             </ul>
           </div>
 
