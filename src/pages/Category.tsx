@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+// ❌ DON'T TOUCH - Critical hook imports
 import { useProducts, useAddToCart } from "@/hooks/use-vendure";
 import { useLocalCart } from "@/hooks/use-local-cart";
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +17,7 @@ const Category = () => {
   const [sortBy, setSortBy] = useState("featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
+  // ❌ DON'T TOUCH - Critical hook calls
   // Fetch products from Vendure (for now, we'll get all products and filter by category name)
   const { data: productsData, isLoading, error } = useProducts({ take: 50 });
   const addToCartMutation = useAddToCart();

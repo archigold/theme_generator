@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import SearchBarWithSuggestions from "@/components/SearchBarWithSuggestions";
+// ❌ DON'T TOUCH - Critical hook imports
 import { useLocalCart } from "@/hooks/use-local-cart";
 import { useProducts, useCollections, useSearchProducts, useAddToCart } from "@/hooks/use-vendure";
 import { convertVendureProduct, convertVendureCollection } from "@/lib/vendure-api";
@@ -41,6 +42,7 @@ const Products = () => {
   const searchQuery = searchParams.get("q") || "";
 
 
+  // ❌ DON'T TOUCH - Critical hook calls
   // Local cart
   const { addToCart: addToLocalCart } = useLocalCart();
   
@@ -72,6 +74,7 @@ const Products = () => {
     searchQuery
   });
 
+  // ❌ DON'T TOUCH - Critical data processing logic
   // Process products with filters
   const processedProducts = rawProducts ? rawProducts.map(item => {
     if (isSearchMode) {
@@ -84,6 +87,7 @@ const Products = () => {
         rating: 4.5,
         reviews: 0,
         image: item.productAsset?.preview || item.productVariantAsset?.preview || '/placeholder.svg',
+        badge: undefined,
         category: 'uncategorized',
         description: '',
         specifications: {},
@@ -113,6 +117,7 @@ const Products = () => {
         rating: 4.5,
         reviews: 0,
         image: item.featuredAsset?.preview || '/placeholder.svg',
+        badge: undefined,
         category: item.collections[0]?.slug || 'uncategorized',
         description: item.description,
         specifications: {},
@@ -208,6 +213,7 @@ const Products = () => {
     }
   };
 
+  // ❌ DON'T TOUCH - Critical event handler using hooks
   const handleAddToCart = async (productId: string, productName: string, variantId?: string) => {
     try {
       const product = processedProducts.find(p => p.id === productId);

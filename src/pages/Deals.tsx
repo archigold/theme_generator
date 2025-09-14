@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+// ❌ DON'T TOUCH - Critical hook imports
 import { useProducts, useAddToCart } from "@/hooks/use-vendure";
 import { useLocalCart } from "@/hooks/use-local-cart";
 import { useToast } from "@/hooks/use-toast";
@@ -12,6 +13,7 @@ const Deals = () => {
   const { toast } = useToast();
   
 
+  // ❌ DON'T TOUCH - Critical hook calls
   // Fetch products from Vendure (we'll treat all products as "deals" for now)
   const { data: productsData, isLoading, error } = useProducts({ take: 12 });
   const addToCartMutation = useAddToCart();

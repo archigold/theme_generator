@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 // Temporarily disable Separator to fix loading issue
 // import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
+// ❌ DON'T TOUCH - Critical hook imports
 import { useProduct, useProductById, useAddToCart } from "@/hooks/use-vendure";
 import { useLocalCart } from "@/hooks/use-local-cart";
 import Header from "@/components/Header";
@@ -16,6 +17,7 @@ const Product = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
+  // ❌ DON'T TOUCH - Critical hook calls and data logic
   // Use Vendure hooks to fetch product data - try both slug and ID
   const { data: vendureProductBySlug, isLoading: isLoadingBySlug, error: errorBySlug } = useProduct(id || '');
   const { data: vendureProductById, isLoading: isLoadingById, error: errorById } = useProductById(id || '');

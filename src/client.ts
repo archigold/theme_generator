@@ -21,9 +21,9 @@ export async function request<T, V extends Variables = Variables>(
 ): Promise<T> {
   try {
     console.log('GraphQL Request:', { document, variables });
-    const result = await client.request(document, variables);
+    const result = await client.request(document, variables as any);
     console.log('GraphQL Response:', result);
-    return result;
+    return result as T;
   } catch (error) {
     console.error('GraphQL Error:', error);
     throw error;

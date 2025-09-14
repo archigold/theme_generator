@@ -1,3 +1,4 @@
+// ✅ SAFE TO CHANGE - This is just layout structure, no business logic
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ProductGrid from "@/components/ProductGrid";

@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
+// ❌ DON'T TOUCH - Critical hook imports
 import { useActiveOrder, useCartSummary } from "@/hooks/use-vendure";
 import { useLocalCart } from "@/hooks/use-local-cart";
 import Header from "@/components/Header";
@@ -50,6 +51,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
+  // ❌ DON'T TOUCH - Critical hook calls
   // Cart data
   const { data: activeOrder } = useActiveOrder();
   const { totalItems, totalPrice, currencyCode } = useCartSummary();
