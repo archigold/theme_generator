@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request';
 
 // Vendure GraphQL endpoint
-const VENDURE_API_URL = import.meta.env.VITE_VENDURE_API_URL || 'http://51.15.207.136:3000/shop-api';
+const VENDURE_API_URL = import.meta.env.VITE_VENDURE_API_URL || 'https://stablecommerce.ai/mgmt/shop-api';
 
 // Create GraphQL client
 export const vendureClient = new GraphQLClient(VENDURE_API_URL, {

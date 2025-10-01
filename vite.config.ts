@@ -1,18 +1,22 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+import { loadEnv, ConfigEnv } from "vite";
+import baseConfig from "./vite.config.base";
+import localConfig from "./vite.config.local";
+import prodConfig from "./vite.config.prod";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8081,
-  },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-}));
+export default ({ mode, command }: ConfigEnv) => {
+  // Load environment variables
+  const env = loadEnv(mode, process.cwd(), '');
+  
+  // Determine which configuration to use
+  if (mode === 'local' || env.VITE_ENV === 'local') {
+    return localConfig;
+  }
+  
+  if (mode === 'production' || env.VITE_ENV === 'production') {
+    return prodConfig;
+  }
+  
+  // Default to base config for development
+  return baseConfig;
+};
