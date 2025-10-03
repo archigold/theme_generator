@@ -18,6 +18,7 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Returns from "./pages/Returns";
 import ShippingInfo from "./pages/ShippingInfo";
+import ThemeStudio from "./pages/ThemeStudio";
 import CookieBanner from "./components/CookieBanner";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -54,6 +55,7 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/returns" element={<Returns />} />
           <Route path="/shipping" element={<ShippingInfo />} />
+          <Route path="/theme-studio" element={<ThemeStudio />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

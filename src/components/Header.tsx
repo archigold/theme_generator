@@ -22,6 +22,7 @@ const Header = () => {
           <nav className="hidden md:flex items-center gap-8">
             <Link to="/products" className="text-foreground hover:text-primary transition-colors">Products</Link>
             <Link to="/deals" className="text-foreground hover:text-primary transition-colors">Deals</Link>
+            <Link to="/theme-studio" className="text-foreground hover:text-primary transition-colors">Theme Studio</Link>
             <div className="relative group">
               <button className="text-foreground hover:text-primary transition-colors">Categories</button>
               <div className="absolute top-full left-0 bg-card/80 backdrop-blur-glass border border-border/20 rounded-lg shadow-elegant p-4 space-y-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 min-w-48">
