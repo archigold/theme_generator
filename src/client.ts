@@ -2,7 +2,7 @@ import { GraphQLClient, RequestDocument, Variables } from 'graphql-request';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
 // Set your Vendure Shop API endpoint here
-const VENDURE_API_URL = 'http://51.15.207.136:3000/shop-api';
+const VENDURE_API_URL = 'https://stablecommerce.ai/mgmt/shop-api';
 
 const client = new GraphQLClient(VENDURE_API_URL, {
   // This is crucial for cookie-based sessions, allowing the browser to

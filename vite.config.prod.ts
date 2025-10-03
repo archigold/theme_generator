@@ -1,6 +1,7 @@
 import { defineConfig, mergeConfig } from "vite";
 import baseConfig from "./vite.config.base";
 import fs from "fs";
+import path from "path";
 
 // Production configuration
 const prodConfig = mergeConfig(
@@ -9,10 +10,17 @@ const prodConfig = mergeConfig(
     server: {
       host: "::",
       port: 443,
-      https: {
-        key: fs.readFileSync("/etc/letsencrypt/live/stablecommerce.ai/privkey.pem"),
-        cert: fs.readFileSync("/etc/letsencrypt/live/stablecommerce.ai/fullchain.pem"),
-      },
+      // Only enable HTTPS if SSL certificates exist
+      ...(fs.existsSync("/etc/letsencrypt/live/stablecommerce.ai/privkey.pem") && 
+          fs.existsSync("/etc/letsencrypt/live/stablecommerce.ai/fullchain.pem") ? {
+        https: {
+          key: fs.readFileSync("/etc/letsencrypt/live/stablecommerce.ai/privkey.pem"),
+          cert: fs.readFileSync("/etc/letsencrypt/live/stablecommerce.ai/fullchain.pem"),
+        },
+      } : {
+        // Fallback to HTTP for development or when certificates don't exist
+        port: 3000,
+      }),
       allowedHosts: ["stablecommerce.ai", "www.stablecommerce.ai"],
       hmr: {
         overlay: false,

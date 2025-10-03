@@ -98,7 +98,7 @@ The build configuration includes intelligent code splitting:
 ## Proxy Configuration
 
 Local development includes a proxy to the Vendure backend:
-- `/api/*` → `https://stablecommerce.ai/mgmt/*`
+- `/api/*` → `https://stablecommerce.ai/mgmt/shop-api/*`
 - Enables CORS for development
 - Automatic path rewriting
 
@@ -153,7 +153,7 @@ Ensure Let's Encrypt certificates are available at:
 - `/etc/letsencrypt/live/stablecommerce.ai/fullchain.pem`
 
 ### Proxy Issues
-Check that the Vendure backend is accessible at `https://stablecommerce.ai/mgmt`
+Check that the Vendure backend is accessible at `https://stablecommerce.ai/mgmt/shop-api`
 
 ## Best Practices
 

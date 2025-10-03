@@ -3,7 +3,7 @@ import baseConfig from "./vite.config.base";
 
 // Local development configuration
 const localConfig = mergeConfig(
-  baseConfig({ mode: 'local', command: 'serve' }),
+  baseConfig({ mode: 'development', command: 'serve' }),
   {
     server: {
       host: "::",
@@ -11,16 +11,20 @@ const localConfig = mergeConfig(
       allowedHosts: ["localhost", "127.0.0.1", "10.0.0.102"],
       hmr: {
         overlay: false, // Disable error overlay to prevent URI malformed errors
-        port: 8081,
+        port: 8080, // Use same port as server
       },
       cors: true,
       proxy: {
         '/api': {
-          target: 'https://stablecommerce.ai/mgmt',
+          target: 'https://stablecommerce.ai/mgmt/shop-api',
           changeOrigin: true,
           secure: true,
           rewrite: (path: string) => path.replace(/^\/api/, ''),
         },
+      },
+      watch: {
+        // Ignore config file changes to prevent restart loops
+        ignored: ['**/vite.config.*.ts', '**/vite.config.ts'],
       },
     },
     build: {

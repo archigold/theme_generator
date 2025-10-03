@@ -17,6 +17,6 @@ export default ({ mode, command }: ConfigEnv) => {
     return prodConfig;
   }
   
-  // Default to base config for development
-  return baseConfig;
+  // Default to local config for development (not base config)
+  return localConfig;
 };

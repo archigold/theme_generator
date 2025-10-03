@@ -11,7 +11,7 @@ const getAdminUrl = () => {
   const adminUrl = import.meta.env.VITE_VENDURE_ADMIN_URL;
   if (adminUrl) return adminUrl;
   
-  const apiUrl = import.meta.env.VITE_VENDURE_API_URL || 'http://51.15.207.136:3000/shop-api';
+  const apiUrl = import.meta.env.VITE_VENDURE_API_URL || 'https://stablecommerce.ai/mgmt/shop-api';
   // Convert shop-api to admin
   return apiUrl.replace('/shop-api', '/admin');
 };
