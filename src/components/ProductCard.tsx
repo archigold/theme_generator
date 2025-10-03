@@ -14,7 +14,8 @@ interface ProductCardProps {
   reviews: number;
   image: string;
   badge?: string;
-  onAddToCart: (id: string, name: string) => void;
+  variantId?: string;
+  onAddToCart: (id: string, name: string, variantId?: string) => void;
 }
 
 const ProductCard = ({ 
@@ -27,6 +28,7 @@ const ProductCard = ({
   reviews, 
   image, 
   badge,
+  variantId,
   onAddToCart 
 }: ProductCardProps) => {
   const renderStars = (rating: number) => {
@@ -87,7 +89,7 @@ const ProductCard = ({
       
       <CardFooter className="p-4 pt-0">
         <Button 
-          onClick={() => onAddToCart(id, name)}
+          onClick={() => onAddToCart(id, name, variantId)}
           variant="neon"
           className="w-full"
           size="lg"

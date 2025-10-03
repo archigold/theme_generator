@@ -250,17 +250,23 @@ export class VendureApiService {
 
   static async addToCart(productVariantId: string, quantity: number = 1) {
     try {
+      console.log('VendureApiService.addToCart called with:', { productVariantId, quantity });
+      
       const response = await vendureClient.request<{
         addItemToOrder: VendureOrder | { errorCode: string; message: string };
       }>(ADD_TO_ORDER_MUTATION, { productVariantId, quantity });
       
+      console.log('VendureApiService.addToCart response:', response);
+      
       if ('errorCode' in response.addItemToOrder) {
+        console.error('Vendure API returned error:', response.addItemToOrder);
         throw new Error(response.addItemToOrder.message);
       }
       
+      console.log('VendureApiService.addToCart successful');
       return response.addItemToOrder;
     } catch (error) {
-      console.error('Error adding item to cart:', error);
+      console.error('VendureApiService.addToCart error:', error);
       throw error;
     }
   }

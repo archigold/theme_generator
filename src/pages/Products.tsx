@@ -215,35 +215,30 @@ const Products = () => {
 
   // ❌ DON'T TOUCH - Critical event handler using hooks
   const handleAddToCart = async (productId: string, productName: string, variantId?: string) => {
-    try {
-      const product = processedProducts.find(p => p.id === productId);
-      const targetVariantId = variantId || (product?.variants?.[0]?.id) || productId;
-      
-      await addToCartMutation.mutateAsync({ 
-        productVariantId: targetVariantId, 
-        quantity: 1 
-      });
-      
+    console.log('Products page - Add to cart clicked:', { productId, productName, variantId });
+    console.log('Products page - Available products:', processedProducts.map(p => ({ id: p.id, name: p.name })));
+    
+    // Use local cart only (same as main page)
+    const product = processedProducts.find(p => p.id === productId);
+    if (product) {
+      console.log('Products page - Adding to local cart:', { productId, productName, price: product.price, image: product.image, variantId });
+      addToLocalCart(productId, productName, product.price, product.image, variantId);
       toast({
         title: "Added to cart!",
         description: `${productName} has been added to your cart.`,
       });
-    } catch (error) {
-      // Fallback to local cart if Vendure fails
-      const product = processedProducts.find(p => p.id === productId);
-      if (product) {
-        addToLocalCart(productId, productName, product.price, product.image, variantId);
-    toast({
-      title: "Added to cart!",
-          description: `${productName} has been added to your cart.`,
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "Failed to add item to cart. Please try again.",
-          variant: "destructive",
-        });
-      }
+      // Force a small delay to ensure state update
+      setTimeout(() => {
+        console.log('Products page - Cart update completed');
+      }, 100);
+    } else {
+      console.error('Products page - Product not found:', productId);
+      console.error('Products page - Available product IDs:', processedProducts.map(p => p.id));
+      toast({
+        title: "Error",
+        description: "Product not found",
+        variant: "destructive",
+      });
     }
   };
 
@@ -266,9 +261,6 @@ const Products = () => {
           <p className="text-lg text-muted-foreground mb-6">
             {isLoading ? "Loading..." : `${processedProducts.length} products found`}
           </p>
-          
-          {/* Search Bar */}
-          <SearchBarWithSuggestions onSearch={handleSearch} className="max-w-md" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -418,6 +410,7 @@ const Products = () => {
                     reviews={product.reviews}
                     image={product.image}
                     badge={product.badge}
+                    variantId={product.variants?.[0]?.id}
                     onAddToCart={handleAddToCart}
                   />
                 ))}

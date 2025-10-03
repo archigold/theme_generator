@@ -120,7 +120,8 @@ const ProductGrid = () => {
                   reviews={0} // Default reviews count
                   image={vendureProduct.featuredAsset?.preview || '/placeholder.svg'}
                   badge={undefined} // You can add badge logic here
-                  onAddToCart={(id: string, name: string) => handleAddToCart(id, name, defaultVariant?.id)}
+                  variantId={defaultVariant?.id}
+                  onAddToCart={handleAddToCart}
                 />
               );
             })
